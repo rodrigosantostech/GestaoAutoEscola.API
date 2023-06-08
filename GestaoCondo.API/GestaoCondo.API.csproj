@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.5" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GestaoAutoEscola.API.Infra.Data\GestaoAutoEscola.API.Infra.Data.csproj" />
+    <ProjectReference Include="..\GestaoAutoEscola.API.Presentation\GestaoAutoEscola.API.Presentation.csproj" />
+    <ProjectReference Include="..\GestaoAutoEscola.API.Services\GestaoAutoEscola.API.Services.csproj" />
+    <ProjectReference Include="..\GestaoCondo.API.Domain\GestaoAutoEscola.API.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

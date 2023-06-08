@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Mapster" Version="7.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GestaoAutoEscola.API.Infra.Data\GestaoAutoEscola.API.Infra.Data.csproj" />
+    <ProjectReference Include="..\GestaoAutoEscola.API.Presentation\GestaoAutoEscola.API.Presentation.csproj" />
+  </ItemGroup>
+
+</Project>
