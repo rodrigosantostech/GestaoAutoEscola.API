@@ -1,5 +1,6 @@
 ﻿using GestaoAutoEscola.API.Domain.Interfaces.Repository;
 using GestaoAutoEscola.API.Domain.Interfaces.Services;
+using GestaoAutoEscola.API.Infra.Data.Context;
 using GestaoAutoEscola.API.Infra.Data.Repository;
 using GestaoAutoEscola.API.Services.Services;
 
@@ -9,6 +10,7 @@ public static class InjecaoDependencia
 {
     public static void AdicionarServicos(this IServiceCollection services)
     {
+        services.AddDbContext<ApplicationDbContext>();
         services.AddScoped<IAlunoRepository, AlunoRepository>();
         services.AddScoped<IAulaRepository, AulaRepository>();
         services.AddScoped<IAvaliacaoRepository, AvaliacaoRepository>();
@@ -21,5 +23,6 @@ public static class InjecaoDependencia
         services.AddScoped<IVeiculoRepository, VeiculoRepository>();
 
         services.AddScoped<ITipoTransacaoService, TipoTransacaoService>();
+        services.AddScoped<ICategoriaTransacaoService, CategoriaTransacaoService>();
     }
 }

@@ -39,23 +39,16 @@ public class TipoTransacaoService: ITipoTransacaoService
             return new ApiResponse<TipoTransacaoDto>(false, null!, ex, "Erro ao Criar Tipo de Transacao");
         }
     }
-    public async Task<ApiResponse<TipoTransacaoDto>> Deletar(TipoTransacaoDto tipoTransacao)
+    public async Task<ApiResponse<TipoTransacaoDto>> Deletar(int id)
     {
         try
         {
-            var tipoTransacaoEntity = new TipoTransacao
-            {
-                Id = tipoTransacao.Id,
-                Tipo = tipoTransacao.Tipo
-
-            };
-
-            _tipoTransacaoRepository.Deletar(tipoTransacaoEntity);
+            await _tipoTransacaoRepository.DeletarAsync(id);
             return new ApiResponse<TipoTransacaoDto>(true, null!, "Deletar feito com sucesso!");
         }
         catch (Exception ex)
         {
-            return new ApiResponse<TipoTransacaoDto>(false, null!, ex, "Error deleting behavioral test.");
+            return new ApiResponse<TipoTransacaoDto>(false, null!, ex, "Error ao deletar Tipo Transacao");
         }
     }
 
@@ -99,7 +92,7 @@ public class TipoTransacaoService: ITipoTransacaoService
 
             };
 
-            var tipoTransacaoAtualizado = await _tipoTransacaoRepository.Atualizar(tipoTransacaoEntity);
+            var tipoTransacaoAtualizado = await _tipoTransacaoRepository.AtualizarAsync(tipoTransacaoEntity);
 
             return new ApiResponse<TipoTransacaoDto>(true, tipoTransacaoAtualizado.Adapt<TipoTransacaoDto>(), "Atualização feita com sucesso!");
         }

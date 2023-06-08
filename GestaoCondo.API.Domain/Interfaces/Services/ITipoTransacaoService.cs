@@ -9,5 +9,5 @@ public interface ITipoTransacaoService
     Task<ApiResponse<IEnumerable<TipoTransacaoDto>>> ObterTodos();
     Task<ApiResponse<TipoTransacaoDto>> Adicionar(TipoTransacaoDto tipoTransacao);
     Task<ApiResponse<TipoTransacaoDto>> Atualizar(TipoTransacaoDto tipoTransacao);
-    Task<ApiResponse<TipoTransacaoDto>> Deletar(TipoTransacaoDto tipoTransacao);
+    Task<ApiResponse<TipoTransacaoDto>> Deletar(int id);
 }

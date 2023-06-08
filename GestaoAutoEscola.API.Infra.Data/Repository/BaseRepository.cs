@@ -32,20 +32,25 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         return entity;
     }
 
-    public async Task<TEntity> Atualizar(TEntity entity)
+    public async Task<TEntity> AtualizarAsync(TEntity entity)
     {
         _dbContext.Entry(entity).State = EntityState.Modified;
         await _dbContext.SaveChangesAsync();
         return entity;
     }
 
-    public void Deletar(TEntity entity)
+    public async Task DeletarAsync(int id)
     {
-        if (_dbContext.Entry(entity).State == EntityState.Detached)
+        TEntity? entity = await _dbContext.Set<TEntity>().FindAsync(id);
+
+        if (entity != null)
         {
-            _dbSet.Attach(entity);
+            _dbContext.Set<TEntity>().Remove(entity);
+            await _dbContext.SaveChangesAsync();
         }
-        _dbSet.Remove(entity);
-        _dbContext.SaveChanges();
+        else
+        {
+            throw new ArgumentException($"Entidade com o ID {id} não encontrada");
+        }
     }
 }
