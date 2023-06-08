@@ -1,8 +1,7 @@
 # API do Sistema de Gestão de Autoescola
 
-Bem-vindo(a) à documentação da API do Sistema de Gestão de Autoescola. Esta API permite a integração de um sistema de gerenciamento de autoescola, oferecendo funcionalidades para gerenciar alunos, instrutores, veículos, aulas e muito mais.
-
-A API é baseada em arquitetura RESTful e utiliza os princípios HTTP para realizar operações de CRUD (Create, Read, Update, Delete) nos recursos disponíveis. É fornecido suporte para autenticação e autorização, permitindo que você controle o acesso aos recursos da API.
+Bem-vindo(a) à documentação da API do Sistema de Gestão de Autoescola. ' Esta API é uma aplicação desenvolvida em .NET 7, arquitetura RESTful e segue os princípios de Domain-Driven Design (DDD), Clean Code e Clean Architecture.
+Esta API permite a integração de um sistema de gerenciamento de autoescola, oferecendo funcionalidades para gerenciar alunos, instrutores, veículos, aulas e muito mais.
 
 ## Recursos Disponíveis
 
