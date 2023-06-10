@@ -4,4 +4,5 @@ namespace GestaoAutoEscola.API.Domain.Interfaces.Repository;
 
 public interface IUsuarioRepository : IBaseRepository<Usuario>
 {
+    Task<Usuario?> ObterUsuarioPorEmail(string email);
 }

@@ -4,6 +4,7 @@ using GestaoAutoEscola.API.Infra.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GestaoAutoEscola.API.Infra.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230609011933_AtualizadoNomeCampoVeiculo")]
+    partial class AtualizadoNomeCampoVeiculo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -235,9 +238,6 @@ namespace GestaoAutoEscola.API.Infra.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Roles")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Senha")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -435,7 +435,7 @@ namespace GestaoAutoEscola.API.Infra.Data.Migrations
             modelBuilder.Entity("GestaoAutoEscola.API.Domain.Entities.Veiculo", b =>
                 {
                     b.HasOne("GestaoAutoEscola.API.Domain.Entities.TipoVeiculo", "TipoVeiculo")
-                        .WithMany("Veiculos")
+                        .WithMany()
                         .HasForeignKey("TipoVeiculoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -477,11 +477,6 @@ namespace GestaoAutoEscola.API.Infra.Data.Migrations
             modelBuilder.Entity("GestaoAutoEscola.API.Domain.Entities.TipoTransacao", b =>
                 {
                     b.Navigation("Transacoes");
-                });
-
-            modelBuilder.Entity("GestaoAutoEscola.API.Domain.Entities.TipoVeiculo", b =>
-                {
-                    b.Navigation("Veiculos");
                 });
 
             modelBuilder.Entity("GestaoAutoEscola.API.Domain.Entities.Veiculo", b =>

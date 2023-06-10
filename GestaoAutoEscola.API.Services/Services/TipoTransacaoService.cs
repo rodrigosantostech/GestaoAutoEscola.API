@@ -1,13 +1,13 @@
 ﻿using GestaoAutoEscola.API.Domain.Entities;
 using GestaoAutoEscola.API.Domain.Interfaces.Repository;
 using GestaoAutoEscola.API.Domain.Interfaces.Services;
-using GestaoCondo.API.Presentation.Dto;
-using GestaoCondo.API.Presentation.Response;
+using GestaoAutoEscola.API.Presentation.Dto;
+using GestaoAutoEscola.API.Presentation.Response;
 using Mapster;
 
 namespace GestaoAutoEscola.API.Services.Services;
 
-public class TipoTransacaoService: ITipoTransacaoService
+public class TipoTransacaoService : ITipoTransacaoService
 {
     private readonly ITipoTransacaoRepository _tipoTransacaoRepository;
 
@@ -20,9 +20,6 @@ public class TipoTransacaoService: ITipoTransacaoService
     {
         try
         {
-            var tipoTransacaoValidation = await _tipoTransacaoRepository.ObterPorIdAsync(tipoTransacao.Id);
-            if (tipoTransacaoValidation != null) return new ApiResponse<TipoTransacaoDto>(false, null!, "Test already registered");
-
             var tipoTransacaoEntity = new TipoTransacao
             {
                 Id = tipoTransacao.Id,
@@ -67,15 +64,20 @@ public class TipoTransacaoService: ITipoTransacaoService
 
     public async Task<ApiResponse<TipoTransacaoDto>> ObterPorId(int id)
     {
-        var tipoTransacao = await _tipoTransacaoRepository.ObterPorIdAsync(id);
-        if (tipoTransacao == null)
+        try
         {
-            return new ApiResponse<TipoTransacaoDto>(false, null!, "Test not found.");
+            var tipoTransacao = await _tipoTransacaoRepository.ObterPorIdAsync(id);
+            if (tipoTransacao == null) throw new ApiException("Tipo Transacao não Existe", statusCode: 404);
+
+            var tipoTransacaoDto = tipoTransacao!.Adapt<TipoTransacaoDto>();
+
+            return new ApiResponse<TipoTransacaoDto>(true, tipoTransacaoDto, "Consultar realizada com sucesso.");
+
         }
-
-        var tipoTransacaoDto = tipoTransacao!.Adapt<TipoTransacaoDto>();
-
-        return new ApiResponse<TipoTransacaoDto>(true, tipoTransacaoDto, "Consultar realizada com sucesso.");
+        catch (ApiException ex)
+        {
+            return new ApiResponse<TipoTransacaoDto>(false, ex.StatusCode, ex.Message, ex.StackTrace);
+        }
     }
 
     public async Task<ApiResponse<TipoTransacaoDto>> Atualizar(TipoTransacaoDto tipoTransacao)
@@ -83,7 +85,7 @@ public class TipoTransacaoService: ITipoTransacaoService
         try
         {
             var testValidation = await _tipoTransacaoRepository.ObterPorIdAsync(tipoTransacao.Id);
-            if (testValidation == null) return new ApiResponse<TipoTransacaoDto>(false, null!, "Tipo Transacao nao Existe");
+            if (testValidation == null) throw new ApiException("Tipo Transacao não Existe", statusCode: 404);
 
             var tipoTransacaoEntity = new TipoTransacao
             {
@@ -95,6 +97,10 @@ public class TipoTransacaoService: ITipoTransacaoService
             var tipoTransacaoAtualizado = await _tipoTransacaoRepository.AtualizarAsync(tipoTransacaoEntity);
 
             return new ApiResponse<TipoTransacaoDto>(true, tipoTransacaoAtualizado.Adapt<TipoTransacaoDto>(), "Atualização feita com sucesso!");
+        }
+        catch (ApiException ex)
+        {
+            return new ApiResponse<TipoTransacaoDto>(false, ex.StatusCode, ex.Message, ex.StackTrace);
         }
         catch (Exception ex)
         {

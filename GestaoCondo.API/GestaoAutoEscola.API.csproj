@@ -8,10 +8,15 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GestaoAutoEscola.API.CrossCutting\GestaoAutoEscola.API.CrossCutting.csproj" />
     <ProjectReference Include="..\GestaoAutoEscola.API.Infra.Data\GestaoAutoEscola.API.Infra.Data.csproj" />
     <ProjectReference Include="..\GestaoAutoEscola.API.Presentation\GestaoAutoEscola.API.Presentation.csproj" />
     <ProjectReference Include="..\GestaoAutoEscola.API.Services\GestaoAutoEscola.API.Services.csproj" />

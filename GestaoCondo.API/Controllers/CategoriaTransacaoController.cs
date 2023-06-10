@@ -2,7 +2,7 @@
 using GestaoAutoEscola.API.Presentation.Dto;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GestaoCondo.API.Controllers;
+namespace GestaoAutoEscola.API.Controllers;
 [ApiController]
 [Route("api/categoria_transacao")]
 public class CategoriaTransacaoController : BaseController

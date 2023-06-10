@@ -22,12 +22,19 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
 
     public async Task<TEntity?> ObterPorIdAsync(int id)
     {
-        return await _dbSet.FindAsync(id);
+
+        TEntity? entity = await _dbContext.Set<TEntity>().FindAsync(id);
+        if (entity is not null)
+        {
+            _dbContext.Entry(entity).State = EntityState.Detached;
+            return entity;
+        }
+        return null!;
     }
 
     public async Task<TEntity> AdicionarAsync(TEntity entity)
     {
-        await _dbSet.AddAsync(entity);
+        await _dbContext.Set<TEntity>().AddAsync(entity);
         await _dbContext.SaveChangesAsync();
         return entity;
     }

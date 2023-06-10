@@ -8,12 +8,12 @@ public class Avaliacao
     public string Feedback { get; set; } = string.Empty;
 
     public int InstrutorId { get; set; }
-    public Instrutor Instrutor { get; set; } = new Instrutor();
+    public Instrutor Instrutor { get; set; } = default!;
 
     public int AulaId { get; set; }
-    public Aula Aula { get; set; } = new Aula();
+    public Aula Aula { get; set; } = default!;
 
     public int AlunoId { get; set; }
-    public Aluno Aluno { get; set; } = new Aluno(); 
+    public Aluno Aluno { get; set; } = default!; 
 
 }

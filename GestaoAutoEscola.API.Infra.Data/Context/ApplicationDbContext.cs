@@ -28,13 +28,16 @@ public class ApplicationDbContext : DbContext
     public DbSet<Usuario> Usuarios { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-            => optionsBuilder.UseSqlServer("Data Source=.\\SQLEXPRESS;Database=GestaoAutoEscola;Integrated Security=SSPI;TrustServerCertificate=True");
+    {
+        optionsBuilder.UseSqlServer("Data Source=.\\SQLEXPRESS;Database=GestaoAutoEscola;Integrated Security=SSPI;TrustServerCertificate=True");
+        optionsBuilder.EnableSensitiveDataLogging();
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Veiculo>(entity =>
         {
-            entity.HasKey(c => c.Id); 
+            entity.HasKey(c => c.Id);
             entity.Property(a => a.Id).ValueGeneratedOnAdd();
             entity.Property(c => c.Modelo).IsRequired();
             entity.Property(c => c.Marca).IsRequired();
@@ -56,8 +59,8 @@ public class ApplicationDbContext : DbContext
                 .UsingEntity(j => j.ToTable("InstrutorCarro"));
 
             entity.HasOne(c => c.TipoVeiculo)
-                .WithMany()
-                .HasForeignKey(c => c.TipoVeicuoId);
+                .WithMany(i => i.Veiculos)
+                .HasForeignKey(c => c.TipoVeiculoId);
         });
 
         modelBuilder.Entity<TipoVeiculo>(entity =>
@@ -143,6 +146,7 @@ public class ApplicationDbContext : DbContext
             entity.Property(a => a.Telefone);
             entity.Property(a => a.Endereco);
             entity.Property(a => a.DataCadastro);
+            entity.Property(a => a.Roles);
 
             // Relacionamento
             entity.HasDiscriminator<string>("TipoUsuario")
@@ -191,7 +195,7 @@ public class ApplicationDbContext : DbContext
             entity.Property(a => a.DataTransacao).IsRequired();
             entity.Property(a => a.Descricao).IsRequired();
             entity.Property(a => a.Valor).HasColumnType("decimal(18,2)").IsRequired();
-            
+
             // Relacionamentos
             entity.HasOne(t => t.TipoTransacao)
                 .WithMany(c => c.Transacoes)
@@ -206,7 +210,7 @@ public class ApplicationDbContext : DbContext
             entity.HasOne(t => t.Aula)
                 .WithOne(a => a.Transacao)
                 .HasForeignKey<Transacao>(t => t.AulaId)
-                .IsRequired(false); 
+                .IsRequired(false);
         });
     }
 }

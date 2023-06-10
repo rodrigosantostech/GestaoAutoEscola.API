@@ -1,6 +1,5 @@
-﻿namespace GestaoAutoEscola.API.Domain.Entities;
-
-public class Veiculo
+﻿namespace GestaoAutoEscola.API.Presentation.Dto;
+public class VeiculoDto
 {
     public int Id { get; set; }
     public string Modelo { get; set; } = string.Empty;
@@ -13,7 +12,4 @@ public class Veiculo
     public int Kilometragem { get; set; }
     public DateTime DataUltimaManutencao { get; set; }
     public int TipoVeiculoId { get; set; }
-    public virtual List<Aula> Aulas { get; set; } = new List<Aula>();
-    public virtual List<Instrutor> Instrutores { get; set; } = new List<Instrutor>();
-    public virtual TipoVeiculo TipoVeiculo { get; set; } = default!;
 }

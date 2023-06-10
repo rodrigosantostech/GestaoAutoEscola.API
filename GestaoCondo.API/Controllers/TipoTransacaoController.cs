@@ -1,8 +1,8 @@
 ﻿using GestaoAutoEscola.API.Domain.Interfaces.Services;
-using GestaoCondo.API.Presentation.Dto;
+using GestaoAutoEscola.API.Presentation.Dto;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GestaoCondo.API.Controllers;
+namespace GestaoAutoEscola.API.Controllers;
 [ApiController]
 [Route("api/tipo_transacao")]
 public class TipoTransacaoController : BaseController

@@ -2,7 +2,7 @@
 using GestaoAutoEscola.API.Domain.Interfaces.Repository;
 using GestaoAutoEscola.API.Domain.Interfaces.Services;
 using GestaoAutoEscola.API.Presentation.Dto;
-using GestaoCondo.API.Presentation.Response;
+using GestaoAutoEscola.API.Presentation.Response;
 using Mapster;
 
 namespace GestaoAutoEscola.API.Services.Services;
@@ -20,9 +20,6 @@ public class CategoriaTransacaoService : ICategoriaTransacaoService
     {
         try
         {
-            var tipoTransacaoValidation = await _categoriaTransacaoRepository.ObterPorIdAsync(tipoTransacao.Id);
-            if (tipoTransacaoValidation != null) return new ApiResponse<CategoriaTransacaoDto>(false, null!, "Categoria Transacao ja existe!");
-
             var tipoTransacaoEntity = new CategoriaTransacao
             {
                 Id = tipoTransacao.Id,
@@ -67,15 +64,21 @@ public class CategoriaTransacaoService : ICategoriaTransacaoService
 
     public async Task<ApiResponse<CategoriaTransacaoDto>> ObterPorId(int id)
     {
-        var categoriaTransacao = await _categoriaTransacaoRepository.ObterPorIdAsync(id);
-        if (categoriaTransacao == null)
+        try
         {
-            return new ApiResponse<CategoriaTransacaoDto>(false, null!, "Categoria Transacao não existe!.");
+
+            var categoriaTransacao = await _categoriaTransacaoRepository.ObterPorIdAsync(id);
+            if (categoriaTransacao == null) throw new ApiException("Categoria Transacao não Existe", statusCode: 404);
+
+            var categoriaTransacaoDto = categoriaTransacao!.Adapt<CategoriaTransacaoDto>();
+
+            return new ApiResponse<CategoriaTransacaoDto>(true, categoriaTransacaoDto, "Consulta realizada com sucesso.");
+
         }
-
-        var categoriaTransacaoDto = categoriaTransacao!.Adapt<CategoriaTransacaoDto>();
-
-        return new ApiResponse<CategoriaTransacaoDto>(true, categoriaTransacaoDto, "Consulta realizada com sucesso.");
+        catch (ApiException ex)
+        {
+            return new ApiResponse<CategoriaTransacaoDto>(false, ex.StatusCode, ex.Message, ex.StackTrace);
+        }
     }
 
     public async Task<ApiResponse<CategoriaTransacaoDto>> Atualizar(CategoriaTransacaoDto tipoTransacao)
@@ -83,7 +86,7 @@ public class CategoriaTransacaoService : ICategoriaTransacaoService
         try
         {
             var categoriaValidacao = await _categoriaTransacaoRepository.ObterPorIdAsync(tipoTransacao.Id);
-            if (categoriaValidacao == null) return new ApiResponse<CategoriaTransacaoDto>(false, null!, "Tipo Transacao nao Existe");
+            if (categoriaValidacao == null) throw new ApiException("Categoria Transacao não Existe", statusCode: 404);
 
             var categoriaTransacaoEntity = new CategoriaTransacao
             {
@@ -95,6 +98,10 @@ public class CategoriaTransacaoService : ICategoriaTransacaoService
             var categoriaTransacaoAtualizado = await _categoriaTransacaoRepository.AtualizarAsync(categoriaTransacaoEntity);
 
             return new ApiResponse<CategoriaTransacaoDto>(true, categoriaTransacaoAtualizado.Adapt<CategoriaTransacaoDto>(), "Atualização feita com sucesso!");
+        }
+        catch (ApiException ex)
+        {
+            return new ApiResponse<CategoriaTransacaoDto>(false, ex.StatusCode, ex.Message, ex.StackTrace);
         }
         catch (Exception ex)
         {

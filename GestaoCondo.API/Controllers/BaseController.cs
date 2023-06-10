@@ -1,9 +1,9 @@
-﻿using GestaoCondo.API.Presentation.Response;
+﻿using GestaoAutoEscola.API.Presentation.Response;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GestaoCondo.API.Controllers;
+namespace GestaoAutoEscola.API.Controllers;
 
-public class BaseController: ControllerBase
+public class BaseController : ControllerBase
 {
     protected ActionResult<T> ApiResponseToActionResult<T>(ApiResponse<T> response)
     {

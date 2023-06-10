@@ -1,5 +1,5 @@
-﻿using GestaoCondo.API.Presentation.Dto;
-using GestaoCondo.API.Presentation.Response;
+﻿using GestaoAutoEscola.API.Presentation.Dto;
+using GestaoAutoEscola.API.Presentation.Response;
 
 namespace GestaoAutoEscola.API.Domain.Interfaces.Services;
 
