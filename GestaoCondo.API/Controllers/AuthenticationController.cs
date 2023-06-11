@@ -14,7 +14,7 @@ public class AuthenticationController : ControllerBase
     public async Task<IActionResult> AuthenticateAsync([FromBody] DataAuthenticationDto dataAuthentication,
         [FromServices] IAutenticacaoService authenticationService)
     {
-        return Ok(await authenticationService.Authenticate(dataAuthentication.Email, dataAuthentication.Password));
+        return Ok(await authenticationService.Authenticate(dataAuthentication.Email, dataAuthentication.Senha));
     }
 
     [HttpPost("revalidate")]

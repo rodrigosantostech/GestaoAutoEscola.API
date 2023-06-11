@@ -8,11 +8,11 @@ public enum Roles
     ADMIN = 1,
 
     [Display(Name = "GESTOR")]
-    MANAGER = 2,
+    GESTOR = 2,
 
     [Display(Name = "ALUNO")]
-    CUSTOMER = 3,
+    ALUNO = 3,
 
     [Display(Name = "INSTRUTOR")]
-    EMPLOYEE = 4,
+    INSTRUTOR = 4,
 }

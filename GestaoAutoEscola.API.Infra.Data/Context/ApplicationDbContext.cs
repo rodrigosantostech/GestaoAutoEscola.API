@@ -149,9 +149,11 @@ public class ApplicationDbContext : DbContext
             entity.Property(a => a.Roles);
 
             // Relacionamento
-            entity.HasDiscriminator<string>("TipoUsuario")
-                .HasValue<Aluno>("Aluno")
-                .HasValue<Instrutor>("Instrutor");
+            entity.HasDiscriminator<string>("Roles")
+                .HasValue<Aluno>("ALUNO")
+                .HasValue<Instrutor>("INSTRUTOR")
+                .HasValue<Admin>("ADMIN")
+                .HasValue<Gerente>("GERENTE");
         });
 
         modelBuilder.Entity<Aula>(entity =>

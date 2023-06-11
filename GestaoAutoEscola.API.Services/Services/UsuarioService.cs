@@ -1,19 +1,18 @@
-﻿using GestaoAutoEscola.API.Domain.Entities;
-using GestaoAutoEscola.API.Domain.Interfaces.Repository;
+﻿using GestaoAutoEscola.API.Domain.Interfaces.Repository;
 using GestaoAutoEscola.API.Domain.Interfaces.Services;
+using GestaoAutoEscola.API.Domain.Interfaces.Strategy;
 using GestaoAutoEscola.API.Presentation.Dto;
 using GestaoAutoEscola.API.Presentation.Response;
+using GestaoAutoEscola.API.Services.Strategy;
 using Mapster;
 
 namespace GestaoAutoEscola.API.Services.Services;
 public class UsuarioService : IUsuarioService
 {
     private readonly IUsuarioRepository _usuarioRepository;
-
     public UsuarioService(IUsuarioRepository usuarioRepository)
     {
         _usuarioRepository = usuarioRepository;
-
     }
     public async Task<ApiResponse<UsuarioDto>> Adicionar(UsuarioDto usuario)
     {
@@ -22,18 +21,26 @@ public class UsuarioService : IUsuarioService
             var usuarioValidation = await _usuarioRepository.ObterUsuarioPorEmail(usuario.Email);
             if (usuarioValidation != null) throw new ApiException("Usuario com esse email já existe", statusCode: 201);
 
-            var usuarioEntity = new Usuario
+            RoleStrategy roleStrategy;
+            switch (usuario.Roles)
             {
-                Id = usuario.Id,
-                Email = usuario.Email,
-                Cpf = usuario.Cpf,
-                Senha = usuario.Senha,
-                DataCadastro = DateTime.Now,
-                Telefone = usuario.Telefone,
-                Nome = usuario.Nome,
-                DataNascimento = usuario.DataNascimento,
-                Endereco = usuario.Endereco,
-            };
+                case "ALUNO":
+                    roleStrategy = new AlunoRoleStrategy();
+                    break;
+                case "INSTRUTOR":
+                    roleStrategy = new InstrutorRoleStrategy();
+                    break;
+                case "ADMIN":
+                    roleStrategy = new AdminRoleStrategy();
+                    break;
+                case "GERENTE":
+                    roleStrategy = new GerenteRoleStrategy();
+                    break;
+                default:
+                    throw new ApiException("Role de usuário inválida.");
+            }
+
+            var usuarioEntity = roleStrategy.CriarUsuario(usuario);
 
             var createdTest = await _usuarioRepository.AdicionarAsync(usuarioEntity);
 
@@ -62,7 +69,15 @@ public class UsuarioService : IUsuarioService
         try
         {
             var usuarios = await _usuarioRepository.ObterTodosAsync();
-            return new ApiResponse<IEnumerable<UsuarioDto>>(true, usuarios.Adapt<List<UsuarioDto>>(), "Consultar realizada com sucesso.");
+
+            var usuariosDto = usuarios.Select(u =>
+            {
+                var usuarioDto = u.Adapt<UsuarioDto>();
+                usuarioDto.Senha = string.Empty;
+                return usuarioDto;
+            }).ToList();
+
+            return new ApiResponse<IEnumerable<UsuarioDto>>(true, usuariosDto, "Consultar realizada com sucesso.");
         }
         catch (Exception ex)
         {
@@ -77,29 +92,38 @@ public class UsuarioService : IUsuarioService
         if (usuario == null) throw new ApiException("Usuario não existe!", statusCode: 404);
 
         var usuarioDto = usuario!.Adapt<UsuarioDto>();
+        usuarioDto.ForcarSenhaVazio();
 
         return new ApiResponse<UsuarioDto>(true, usuarioDto, "Consultar realizada com sucesso.");
     }
 
-    public async Task<ApiResponse<UsuarioDto>> Atualizar(UsuarioDto usuario)
+    public async Task<ApiResponse<UsuarioDto>> Atualizar(UsuarioDto usuarioDto)
     {
         try
         {
-            var usuarioValidation = await _usuarioRepository.ObterPorIdAsync(usuario.Id);
-            if (usuarioValidation == null) throw new ApiException("Usuario não existe!", statusCode: 404);
+            var usuarioBanco = await _usuarioRepository.ObterPorIdAsync(usuarioDto.Id);
+            if (usuarioBanco == null) throw new ApiException("Usuario não existe!", statusCode: 404);
 
-            var usuarioEntity = new Usuario
+            RoleStrategy roleStrategy;
+            switch (usuarioDto.Roles)
             {
-                Id = usuario.Id,
-                Email = usuario.Email,
-                Cpf = usuario.Cpf,
-                Senha = usuario.Senha,
-                DataCadastro = DateTime.Now,
-                Telefone = usuario.Telefone,
-                Nome = usuario.Nome,
-                DataNascimento = usuario.DataNascimento,
-                Endereco = usuario.Endereco,
-            };
+                case "ALUNO":
+                    roleStrategy = new AlunoRoleStrategy();
+                    break;
+                case "INSTRUTOR":
+                    roleStrategy = new InstrutorRoleStrategy();
+                    break;
+                case "ADMIN":
+                    roleStrategy = new AdminRoleStrategy();
+                    break;
+                case "GERENTE":
+                    roleStrategy = new GerenteRoleStrategy();
+                    break;
+                default:
+                    throw new ApiException("Role de usuário inválida.");
+            }
+
+            var usuarioEntity = roleStrategy.AtualizarUsuario(usuarioBanco, usuarioDto);
 
             var usuarioAtualizado = await _usuarioRepository.AtualizarAsync(usuarioEntity);
 

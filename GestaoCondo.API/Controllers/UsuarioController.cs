@@ -1,4 +1,5 @@
-﻿using GestaoAutoEscola.API.Domain.Interfaces.Services;
+﻿using FluentValidation;
+using GestaoAutoEscola.API.Domain.Interfaces.Services;
 using GestaoAutoEscola.API.Presentation.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,11 +10,14 @@ namespace GestaoAutoEscola.API.Controllers;
 public class UsuarioController : BaseController
 {
     private readonly IUsuarioService _usuarioService;
-    public UsuarioController(IUsuarioService usuarioService)
+    private readonly IValidator<UsuarioDto> _validator;
+    public UsuarioController(IUsuarioService usuarioService, IValidator<UsuarioDto> validator)
     {
         _usuarioService = usuarioService;
+        _validator = validator;
     }
 
+    [Authorize("Bearer")]
     [HttpGet("{id}")]
     public async Task<ActionResult<UsuarioDto>> ObterPorId(int id)
     {
@@ -30,18 +34,32 @@ public class UsuarioController : BaseController
 
     [Authorize("Bearer", Roles = "ADMIN,MANAGER")]
     [HttpPost]
-    public async Task<ActionResult<UsuarioDto>> Adicionar(UsuarioDto tipoTransacao)
+    public async Task<ActionResult<UsuarioDto>> Adicionar(UsuarioDto usuario)
     {
-        var response = await _usuarioService.Adicionar(tipoTransacao);
+        var validationResult = _validator.Validate(usuario);
+
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors);
+        }
+
+        var response = await _usuarioService.Adicionar(usuario);
         return ApiResponseToActionResult(response);
     }
 
 
     [Authorize("Bearer", Roles = "ADMIN,MANAGER")]
     [HttpPut]
-    public async Task<ActionResult<UsuarioDto>> Atualizar(UsuarioDto tipoTransacao)
+    public async Task<ActionResult<UsuarioDto>> Atualizar(UsuarioDto usuario)
     {
-        var response = await _usuarioService.Atualizar(tipoTransacao);
+        var validationResult = _validator.Validate(usuario);
+
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(validationResult.Errors);
+        }
+
+        var response = await _usuarioService.Atualizar(usuario);
         return ApiResponseToActionResult(response);
     }
 

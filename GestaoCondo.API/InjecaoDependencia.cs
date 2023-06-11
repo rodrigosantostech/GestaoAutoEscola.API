@@ -1,9 +1,13 @@
 ﻿using CDT.Base2Launch.API.Extensions;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using GestaoAutoEscola.API.CrossCutting;
 using GestaoAutoEscola.API.Domain.Interfaces.Repository;
 using GestaoAutoEscola.API.Domain.Interfaces.Services;
 using GestaoAutoEscola.API.Infra.Data.Context;
 using GestaoAutoEscola.API.Infra.Data.Repository;
+using GestaoAutoEscola.API.Presentation.Dto;
+using GestaoAutoEscola.API.Presentation.Validation;
 using GestaoAutoEscola.API.Services.Services;
 using GestaoCondo.API.Presentation;
 
@@ -41,6 +45,7 @@ public static class InjecaoDependencia
         services.AddScoped<IUsuarioService, UsuarioService>();
         services.AddScoped<IAutenticacaoService, AutenticacaoService>();
 
-
+        services.AddFluentValidationAutoValidation();
+        services.AddTransient<IValidator<UsuarioDto>, UsuarioDtoValidator>();
     }
 }

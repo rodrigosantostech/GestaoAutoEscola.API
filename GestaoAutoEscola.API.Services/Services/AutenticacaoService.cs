@@ -24,12 +24,12 @@ public class AutenticacaoService : IAutenticacaoService
         _usuarioRepository = usuarioRepository ?? throw new ArgumentNullException(nameof(usuarioRepository));
     }
 
-    public async Task<ApiResponse<AutenticacaoDto>> Authenticate(string email, string password)
+    public async Task<ApiResponse<AutenticacaoDto>> Authenticate(string email, string senha)
     {
         try
         {
             var user = await _usuarioRepository.ObterUsuarioPorEmail(email);
-            if (user == null || user?.Senha != password) return new ApiResponse<AutenticacaoDto>(false, null!, "invalid user");
+            if (user == null || !BCrypt.Net.BCrypt.Verify(senha, user.Senha)) return new ApiResponse<AutenticacaoDto>(false, null!, "invalid user");
             var auth = await UserAuthentication(user);
             return new ApiResponse<AutenticacaoDto>(true, auth);
         }

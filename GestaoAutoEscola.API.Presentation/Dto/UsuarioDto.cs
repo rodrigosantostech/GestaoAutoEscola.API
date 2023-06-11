@@ -35,8 +35,14 @@ public class UsuarioDto
     public string? Telefone { get; set; }
     public string? Endereco { get; set; }
     public DateTime DataCadastro { get; set; }
+    public string? CategoriaLicenca { get; set; } = string.Empty;
+    public DateTime? DataValidadeLicenca { get; set; }
+    public decimal? Salario { get; set; }
+    public bool? Aprovado { get; set; }
+    public string? ObjetivoAula { get; set; } = string.Empty;
+    public string Roles { get; set; }
 
-    public void EmptyPassword()
+    public void ForcarSenhaVazio()
     {
         Senha = string.Empty;
     }

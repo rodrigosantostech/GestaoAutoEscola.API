@@ -7,10 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Mapster" Version="7.3.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GestaoAutoEscola.API.CrossCutting\GestaoAutoEscola.API.CrossCutting.csproj" />
     <ProjectReference Include="..\GestaoAutoEscola.API.Infra.Data\GestaoAutoEscola.API.Infra.Data.csproj" />
     <ProjectReference Include="..\GestaoAutoEscola.API.Presentation\GestaoAutoEscola.API.Presentation.csproj" />
   </ItemGroup>
