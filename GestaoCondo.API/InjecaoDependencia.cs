@@ -44,6 +44,7 @@ public static class InjecaoDependencia
         services.AddScoped<IVeiculoService, VeiculoService>();
         services.AddScoped<IUsuarioService, UsuarioService>();
         services.AddScoped<IAutenticacaoService, AutenticacaoService>();
+        services.AddScoped<IAulaService, AulaService>();
 
         services.AddFluentValidationAutoValidation();
         services.AddTransient<IValidator<UsuarioDto>, UsuarioDtoValidator>();

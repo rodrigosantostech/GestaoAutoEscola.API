@@ -1,5 +1,7 @@
-﻿using GestaoAutoEscola.API.Domain.Interfaces.Services;
+﻿using GestaoAutoEscola.API.Domain.Enums;
+using GestaoAutoEscola.API.Domain.Interfaces.Services;
 using GestaoAutoEscola.API.Presentation.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GestaoAutoEscola.API.Controllers;
@@ -13,6 +15,7 @@ public class TipoVeiculoController : BaseController
         _tipoVeiculoService = tipoVeiculoService;
     }
 
+    [Authorize("Bearer", Roles = "ADMIN,MANAGER,INSTRUTOR")]
     [HttpGet("{id}")]
     public async Task<ActionResult<TipoVeiculoDto>> ObterPorId(int id)
     {
@@ -20,6 +23,7 @@ public class TipoVeiculoController : BaseController
         return ApiResponseToActionResult(response);
     }
 
+    [Authorize("Bearer", Roles = "ADMIN,MANAGER,INSTRUTOR")]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<TipoVeiculoDto>>> ObterTodos()
     {
@@ -27,6 +31,7 @@ public class TipoVeiculoController : BaseController
         return ApiResponseToActionResult(response);
     }
 
+    [Authorize("Bearer", Roles = "ADMIN,MANAGER")]
     [HttpPost]
     public async Task<ActionResult<TipoVeiculoDto>> Adicionar(TipoVeiculoDto tipoTransacao)
     {
@@ -34,7 +39,7 @@ public class TipoVeiculoController : BaseController
         return ApiResponseToActionResult(response);
     }
 
-
+    [Authorize("Bearer", Roles = "ADMIN,MANAGER")]
     [HttpPut]
     public async Task<ActionResult<TipoVeiculoDto>> Atualizar(TipoVeiculoDto tipoTransacao)
     {
@@ -42,6 +47,7 @@ public class TipoVeiculoController : BaseController
         return ApiResponseToActionResult(response);
     }
 
+    [Authorize("Bearer", Roles = "ADMIN,MANAGER")]
     [HttpDelete("{id}")]
     public async Task<ActionResult<TipoVeiculoDto>> Deletar(int id)
     {

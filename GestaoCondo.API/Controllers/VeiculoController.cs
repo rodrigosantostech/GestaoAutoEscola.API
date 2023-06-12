@@ -1,5 +1,4 @@
-﻿using GestaoAutoEscola.API.Domain.Enums;
-using GestaoAutoEscola.API.Domain.Interfaces.Services;
+﻿using GestaoAutoEscola.API.Domain.Interfaces.Services;
 using GestaoAutoEscola.API.Presentation.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +14,7 @@ public class VeiculoController : BaseController
         _veiculoService = veiculoService;
     }
 
+    [Authorize("Bearer", Roles = "ADMIN,MANAGER,INSTRUTOR")]
     [HttpGet("{id}")]
     public async Task<ActionResult<VeiculoDto>> ObterPorId(int id)
     {
@@ -22,7 +22,7 @@ public class VeiculoController : BaseController
         return ApiResponseToActionResult(response);
     }
 
-    [Authorize("Bearer")]
+    [Authorize("Bearer", Roles = "ADMIN,MANAGER,INSTRUTOR")]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<VeiculoDto>>> ObterTodos()
     {
@@ -38,7 +38,7 @@ public class VeiculoController : BaseController
         return ApiResponseToActionResult(response);
     }
 
-    [Authorize("Bearer", Roles = "ADMIN,MANAGER")]
+    [Authorize("Bearer", Roles = "ADMIN,MANAGER,INSTRUTOR")]
     [HttpPut]
     public async Task<ActionResult<VeiculoDto>> Atualizar(VeiculoDto tipoTransacao)
     {

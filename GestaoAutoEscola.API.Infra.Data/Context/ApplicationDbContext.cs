@@ -161,8 +161,10 @@ public class ApplicationDbContext : DbContext
             entity.HasKey(a => a.Id);
             entity.Property(a => a.Id).ValueGeneratedOnAdd();
             entity.Property(a => a.Data).IsRequired();
-            entity.Property(a => a.Hora).IsRequired();
+            entity.Property(a => a.HoraInicio).IsRequired();
+            entity.Property(a => a.HoraFim).IsRequired();
             entity.Property(a => a.Pago).IsRequired();
+            entity.Property(a => a.Finalizada).IsRequired();
 
             // Relacionamentos
             entity.HasOne(a => a.Veiculo)

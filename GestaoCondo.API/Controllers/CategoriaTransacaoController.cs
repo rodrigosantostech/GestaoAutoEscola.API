@@ -1,5 +1,6 @@
 ﻿using GestaoAutoEscola.API.Domain.Interfaces.Services;
 using GestaoAutoEscola.API.Presentation.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GestaoAutoEscola.API.Controllers;
@@ -13,6 +14,7 @@ public class CategoriaTransacaoController : BaseController
         _categoriaTransacaoService = categoriaTransacaoService;
     }
 
+    [Authorize("Bearer", Roles = "ADMIN,MANAGER")]
     [HttpGet("{id}")]
     public async Task<ActionResult<CategoriaTransacaoDto>> ObterPorId(int id)
     {
@@ -20,6 +22,7 @@ public class CategoriaTransacaoController : BaseController
         return ApiResponseToActionResult(response);
     }
 
+    [Authorize("Bearer", Roles = "ADMIN,MANAGER")]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<CategoriaTransacaoDto>>> ObterTodos()
     {
@@ -27,6 +30,7 @@ public class CategoriaTransacaoController : BaseController
         return ApiResponseToActionResult(response);
     }
 
+    [Authorize("Bearer", Roles = "ADMIN,MANAGER")]
     [HttpPost()]
     public async Task<ActionResult<CategoriaTransacaoDto>> Adicionar(CategoriaTransacaoDto tipoTransacao)
     {
@@ -34,7 +38,7 @@ public class CategoriaTransacaoController : BaseController
         return ApiResponseToActionResult(response);
     }
 
-
+    [Authorize("Bearer", Roles = "ADMIN,MANAGER")]
     [HttpPut]
     public async Task<ActionResult<CategoriaTransacaoDto>> Atualizar(CategoriaTransacaoDto tipoTransacao)
     {
@@ -42,6 +46,7 @@ public class CategoriaTransacaoController : BaseController
         return ApiResponseToActionResult(response);
     }
 
+    [Authorize("Bearer", Roles = "ADMIN,MANAGER")]
     [HttpDelete("{id}")]
     public async Task<ActionResult<CategoriaTransacaoDto>> Deletar(int id)
     {

@@ -25,6 +25,7 @@ public class UsuarioController : BaseController
         return ApiResponseToActionResult(response);
     }
 
+    [Authorize("Bearer", Roles = "ADMIN,MANAGER")]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<UsuarioDto>>> ObterTodos()
     {

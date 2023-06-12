@@ -42,7 +42,9 @@ builder.Services.AddSwaggerGen(c =>
     c.AddSecurityRequirement(securityRequirement);
 });
 
+builder.Services.RegistrarMapeamento();
 builder.Services.AdicionarServicos(builder.Configuration);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
